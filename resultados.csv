@@ -1,0 +1,7 @@
+Entrada,Algoritmo,Tempo(ns),Memoria(bytes)
+100000,Selection Sort,3.641712,4.86
+10000000,Heap Sort,2.436458,10.80
+10000000,Shell Sort,1.530839,11.17
+10000000,Shell Sort,1.459015,11.17
+10000000,Heap Sort,2.592856,11.28
+10000000,Heap Sort,2.513972,10.84

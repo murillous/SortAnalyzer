@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AlgoritmoConstrutor {
-    List<Integer> entradas = List.of(10, 100, 1000, 10000, 100000, 1000000);
+    List<Integer> entradas = List.of(10, 100, 1000, 10000, 100000, 1000000,10000000);
     List<String> sorts = List.of("Selection Sort", "Shell Sort", "Heap Sort");
 
     int entrada;
