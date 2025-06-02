@@ -3,6 +3,8 @@ package algoritmos;
 import utils.AlgoritmoConstrutor;
 import utils.ResultadoCsv;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class Algoritmos {
@@ -18,13 +20,16 @@ public class Algoritmos {
         Random rand = new Random();
         arr = new int[entrada];
         for (int i = 0; i < entrada; i++) {
-            arr[i] = rand.nextInt(10000);
+            arr[i] = rand.nextInt(20);
         }
     }
 
     public void executar() {
         Runtime runtime = Runtime.getRuntime();
         runtime.gc();
+
+        Date date = new Date();
+        String dataFormatada = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 
         long memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
         long inicio = System.nanoTime();
@@ -54,6 +59,6 @@ public class Algoritmos {
         double tempoSegundos = tempoExecucao / 1_000_000_000.0;
         double memoriaMB = memoriaUsada / (1024.0 * 1024.0);
 
-        ResultadoCsv.salvar("resultados.csv", entrada, sort, tempoSegundos, memoriaMB);
+        ResultadoCsv.salvar("resultados.csv", dataFormatada, sort, entrada, tempoSegundos, memoriaMB);
     }
 }
