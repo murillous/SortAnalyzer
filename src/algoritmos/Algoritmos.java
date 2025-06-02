@@ -16,12 +16,7 @@ public class Algoritmos {
     public Algoritmos(AlgoritmoConstrutor algoritmoConstrutor) {
         entrada = algoritmoConstrutor.obterEntrada();
         sort = algoritmoConstrutor.obterSort();
-
-        Random rand = new Random();
         arr = new int[entrada];
-        for (int i = 0; i < entrada; i++) {
-            arr[i] = rand.nextInt(20);
-        }
     }
 
     public void executar() {
@@ -36,13 +31,13 @@ public class Algoritmos {
 
         switch (sort) {
             case "Selection Sort":
-                SelectionSort.selectionSort(arr);
+               selectionSort(arr);
                 break;
             case "Shell Sort":
-                ShellSort.shellSort(arr);
+               shellSort(arr);
                 break;
             case "Heap Sort":
-                HeapSort.heapsort(arr);
+              heapsort(arr);
                 break;
             default:
                 throw new IllegalArgumentException("Algoritmo inválido: " + sort);
@@ -55,10 +50,83 @@ public class Algoritmos {
         long memoriaUsada = memoriaDepois - memoriaAntes;
 
 
-
         double tempoSegundos = tempoExecucao / 1_000_000_000.0;
         double memoriaMB = memoriaUsada / (1024.0 * 1024.0);
 
         ResultadoCsv.salvar("resultados.csv", dataFormatada, sort, entrada, tempoSegundos, memoriaMB);
+    }
+
+    // ==============SORTS================
+    public static void selectionSort(int[] arr){
+        for(int i = 0; i < arr.length -1; i++){
+            int minIndex = i;
+            for(int j = i + 1; j < arr.length; j++){
+                if(arr[j] < arr[minIndex]){
+                    minIndex = j;
+                }
+            }
+            if(minIndex != i){
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+        }
+    }
+
+    public static void shellSort(int[] array) {
+        int n = array.length;
+        double k = Math.floor((Math.log(n+1)/Math.log(3)));
+        int gap = (int) ((Math.pow(3,k) - 1)/2);
+        while(gap > 0){
+            for(int i = gap; i < n; i++){
+                int key = array[i];
+                int j = i-gap;
+                while(j >= 0 && array[j] > key) {
+                    array[j+gap] = array[j];
+                    j = j - gap;
+                }
+                array[j + gap] = key;
+            }
+            gap = (gap - 1)/3;
+        }
+    }
+
+    public static void heapsort(int[] arr) {
+        int n = arr.length;
+
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(arr, n, i);
+        }
+
+        for (int i = n - 1; i > 0; i--) {
+
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            heapify(arr, i, 0);
+        }
+    }
+
+    private static void heapify(int[] arr, int n, int i) {
+        int maior = i;
+        int esq = 2 * i + 1;
+        int dir = 2 * i + 2;
+
+        if (esq < n && arr[esq] > arr[maior]) {
+            maior = esq;
+        }
+
+        if (dir < n && arr[dir] > arr[maior]) {
+            maior = dir;
+        }
+
+        if (maior != i) {
+            int troca = arr[i];
+            arr[i] = arr[maior];
+            arr[maior] = troca;
+
+            heapify(arr, n, maior);
+        }
     }
 }
