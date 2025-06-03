@@ -11,24 +11,69 @@ public class Algoritmos {
 
     int entrada;
     String sort;
-    int[] arr;
 
     public Algoritmos(AlgoritmoConstrutor algoritmoConstrutor) {
         entrada = algoritmoConstrutor.obterEntrada();
         sort = algoritmoConstrutor.obterSort();
-        arr = new int[entrada];
     }
 
-    public void executar() {
+    public int[] melhorCaso(){
+        int[] arr = new int[entrada];
+        for(int i = 0; i < entrada; i++){
+            arr[i] = i;
+        }
+        return arr;
+    }
+
+    public int[] piorCaso() {
+        int[] arr = new int[entrada];
+        int n = entrada;
+        for(int i = 0; i < entrada; i++){
+            arr[i] = n--;
+        }
+        return arr;
+    }
+
+    public int[] casoMedio(){
+        int[] arr = new int[entrada];
+        Random random = new Random();
+        for(int i = 0; i < entrada; i++){
+            arr[i] = random.nextInt(100000);
+        }
+        return arr;
+    }
+
+    public void executar() throws InterruptedException {
+        switch (sort) {
+            case "Selection Sort":
+                executarSort();
+                break;
+            case "Shell Sort":
+                executarSort();
+                break;
+            case "Heap Sort":
+                //heapsort(arr);
+                break;
+            default:
+                throw new IllegalArgumentException("Algoritmo inválido: " + sort);
+        }
+    }
+
+    public void executarSort() throws InterruptedException {
+        int[] arrMelhorCaso = melhorCaso();
+        int[] arrPiorCaso = piorCaso();
+
         Runtime runtime = Runtime.getRuntime();
-        runtime.gc();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        Date date = new Date();
-        String dataFormatada = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+        executarEMedir(runtime, formatter, arrMelhorCaso, "melhor caso");
 
-        long memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
-        long inicio = System.nanoTime();
+        executarEMedir(runtime, formatter, arrPiorCaso, "pior caso");
 
+        executarEMedirCasoMedio(runtime, formatter);
+    }
+
+    public void executarAlgoritmo(int[] arr) {
         switch (sort) {
             case "Selection Sort":
                selectionSort(arr);
@@ -42,22 +87,74 @@ public class Algoritmos {
             default:
                 throw new IllegalArgumentException("Algoritmo inválido: " + sort);
         }
-
-        long fim = System.nanoTime();
-        long memoriaDepois = runtime.totalMemory() - runtime.freeMemory();
-
-        long tempoExecucao = fim - inicio;
-        long memoriaUsada = memoriaDepois - memoriaAntes;
+    }
 
 
-        double tempoSegundos = tempoExecucao / 1_000_000_000.0;
-        double memoriaMB = memoriaUsada / (1024.0 * 1024.0);
+    public void executarEMedir(Runtime runtime, SimpleDateFormat formatter, int[] arr, String caso)
+            throws InterruptedException {
 
-        ResultadoCsv.salvar("resultados.csv", dataFormatada, sort, entrada, tempoSegundos, memoriaMB);
+        for(int i = 0; i < 3; i++){
+            runtime.gc();
+            Thread.sleep(200);
+        }
+
+        runtime.gc();
+        String data = formatter.format(new Date());
+
+        double memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
+        double inicio = System.nanoTime();
+
+        executarAlgoritmo(arr.clone());
+
+        double memoriaDepois = runtime.totalMemory() - runtime.freeMemory();
+        double fim = System.nanoTime();
+
+        double tempoExecucao = fim - inicio;
+        double memoriaUsada = memoriaDepois - memoriaAntes;
+
+        double tempoSegundos = tempoExecucao/1_000_000_000;
+        double memoriaMB = memoriaUsada/(1024 * 1024);
+
+        ResultadoCsv.salvar("resultado.csv",data, sort, entrada, caso, tempoSegundos, memoriaMB);
+    }
+
+    public void executarEMedirCasoMedio(Runtime runtime, SimpleDateFormat formatter) throws InterruptedException {
+
+        for(int i = 0; i < 3; i++){
+            runtime.gc();
+            Thread.sleep(200);
+        }
+
+        String data = formatter.format(new Date());
+        double mediaMemoria = 0;
+        double mediaExecucao = 0;
+
+        for(int i = 0; i < 5; i++){
+            int[] arrCasoMedio = casoMedio();
+            for(int j = 0; j < 3; j++){
+                runtime.gc();
+                Thread.sleep(200);
+            }
+
+            double memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
+            double inicio = System.nanoTime();
+
+            executarAlgoritmo(arrCasoMedio.clone());
+
+            double memoriaDepois = runtime.totalMemory() - runtime.freeMemory();
+            double fim = System.nanoTime();
+
+            double tempoExecucao = (fim - inicio)/1_000_000_000;
+            double memoriaUsada = (memoriaDepois - memoriaAntes)/(1024 * 1024);
+
+            mediaExecucao += tempoExecucao;
+            mediaMemoria += memoriaUsada;
+        }
+        ResultadoCsv.salvar("resultado.csv", data ,sort, entrada, "caso medio", (double) mediaExecucao /5, (double) mediaMemoria /5);
     }
 
     // ==============SORTS================
-    public static void selectionSort(int[] arr){
+    public int[] selectionSort(int[] arr){
         for(int i = 0; i < arr.length -1; i++){
             int minIndex = i;
             for(int j = i + 1; j < arr.length; j++){
@@ -71,9 +168,10 @@ public class Algoritmos {
                 arr[minIndex] = temp;
             }
         }
+        return arr;
     }
 
-    public static void shellSort(int[] array) {
+    public int[] shellSort(int[] array) {
         int n = array.length;
         double k = Math.floor((Math.log(n+1)/Math.log(3)));
         int gap = (int) ((Math.pow(3,k) - 1)/2);
@@ -89,44 +187,46 @@ public class Algoritmos {
             }
             gap = (gap - 1)/3;
         }
+        return array;
     }
 
-    public static void heapsort(int[] arr) {
-        int n = arr.length;
+    public int[] heapsort(int[] array) {
+        int n = array.length;
 
         for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(arr, n, i);
+            heapify(array, n, i);
         }
 
         for (int i = n - 1; i > 0; i--) {
 
-            int temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
+            int temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
 
-            heapify(arr, i, 0);
+            heapify(array, i, 0);
         }
+        return array;
     }
 
-    private static void heapify(int[] arr, int n, int i) {
+    private void heapify(int[] array, int n, int i) {
         int maior = i;
         int esq = 2 * i + 1;
         int dir = 2 * i + 2;
 
-        if (esq < n && arr[esq] > arr[maior]) {
+        if (esq < n && array[esq] > array[maior]) {
             maior = esq;
         }
 
-        if (dir < n && arr[dir] > arr[maior]) {
+        if (dir < n && array[dir] > array[maior]) {
             maior = dir;
         }
 
         if (maior != i) {
-            int troca = arr[i];
-            arr[i] = arr[maior];
-            arr[maior] = troca;
+            int troca = array[i];
+            array[i] = array[maior];
+            array[maior] = troca;
 
-            heapify(arr, n, maior);
+            heapify(array, n, maior);
         }
     }
 }

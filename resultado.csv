@@ -1,0 +1,7 @@
+Data,Algoritmo,Entrada,Caso,Tempo(s),Memoria(MB)
+2025-06-02 21:11:12,Shell Sort,100000,melhor caso,0.005105,0.614006
+2025-06-02 21:11:13,Shell Sort,100000,pior caso,0.003534,0.381485
+2025-06-02 21:11:13,Shell Sort,100000,caso medio,0.008499,0.391017
+2025-06-02 21:11:36,Selection Sort,100000,melhor caso,0.792628,0.752914
+2025-06-02 21:11:37,Selection Sort,100000,pior caso,2.905065,0.471909
+2025-06-02 21:11:41,Selection Sort,100000,caso medio,1.556538,0.447820
