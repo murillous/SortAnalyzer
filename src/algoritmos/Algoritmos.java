@@ -17,6 +17,7 @@ public class Algoritmos {
         sort = algoritmoConstrutor.obterSort();
     }
 
+    // ====================PARA DIFERENTES CASOS=================
     public int[] melhorCaso(){
         int[] arr = new int[entrada];
         for(int i = 0; i < entrada; i++){
@@ -42,6 +43,8 @@ public class Algoritmos {
         }
         return arr;
     }
+
+
 
     public void executar() throws InterruptedException {
         switch (sort) {
@@ -72,23 +75,6 @@ public class Algoritmos {
 
         executarEMedirCasoMedio(runtime, formatter);
     }
-
-    public void executarAlgoritmo(int[] arr) {
-        switch (sort) {
-            case "Selection Sort":
-               selectionSort(arr);
-                break;
-            case "Shell Sort":
-               shellSort(arr);
-                break;
-            case "Heap Sort":
-              heapsort(arr);
-                break;
-            default:
-                throw new IllegalArgumentException("Algoritmo inválido: " + sort);
-        }
-    }
-
 
     public void executarEMedir(Runtime runtime, SimpleDateFormat formatter, int[] arr, String caso)
             throws InterruptedException {
@@ -151,6 +137,22 @@ public class Algoritmos {
             mediaMemoria += memoriaUsada;
         }
         ResultadoCsv.salvar("resultado.csv", data ,sort, entrada, "caso medio", (double) mediaExecucao /5, (double) mediaMemoria /5);
+    }
+
+    public void executarAlgoritmo(int[] arr) {
+        switch (sort) {
+            case "Selection Sort":
+               selectionSort(arr);
+                break;
+            case "Shell Sort":
+               shellSort(arr);
+                break;
+            case "Heap Sort":
+              heapsort(arr);
+                break;
+            default:
+                throw new IllegalArgumentException("Algoritmo inválido: " + sort);
+        }
     }
 
     // ==============SORTS================

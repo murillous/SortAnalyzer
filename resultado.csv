@@ -5,3 +5,6 @@ Data,Algoritmo,Entrada,Caso,Tempo(s),Memoria(MB)
 2025-06-02 21:11:36,Selection Sort,100000,melhor caso,0.792628,0.752914
 2025-06-02 21:11:37,Selection Sort,100000,pior caso,2.905065,0.471909
 2025-06-02 21:11:41,Selection Sort,100000,caso medio,1.556538,0.447820
+2025-06-02 21:19:26,Shell Sort,10000000,melhor caso,0.132046,40.710251
+2025-06-02 21:19:27,Shell Sort,10000000,pior caso,0.209514,39.523926
+2025-06-02 21:19:28,Shell Sort,10000000,caso medio,1.556682,40.516040
