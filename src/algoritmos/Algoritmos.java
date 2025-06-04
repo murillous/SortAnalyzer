@@ -44,8 +44,6 @@ public class Algoritmos {
         return arr;
     }
 
-
-
     public void executar() throws InterruptedException {
         switch (sort) {
             case "Selection Sort":
