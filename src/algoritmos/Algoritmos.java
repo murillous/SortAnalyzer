@@ -44,6 +44,14 @@ public class Algoritmos {
         return arr;
     }
 
+    public int[] melhorCasoHeapSort(){
+        int[] arr = new int[entrada];
+        for(int i = 0; i < entrada; i++){
+            arr[i] = 5;
+        }
+        return arr;
+    }
+
     public void executar() throws InterruptedException {
         switch (sort) {
             case "Selection Sort":
@@ -53,11 +61,26 @@ public class Algoritmos {
                 executarSort();
                 break;
             case "Heap Sort":
-                //heapsort(arr);
+                executarHeapSort();
                 break;
             default:
                 throw new IllegalArgumentException("Algoritmo inválido: " + sort);
         }
+    }
+
+    public void executarHeapSort() throws  InterruptedException{
+        int[] arrMelhorCaso = melhorCasoHeapSort();
+        int[] arrPiorCaso = melhorCaso();
+
+        Runtime runtime = Runtime.getRuntime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        executarEMedir(runtime, formatter, arrMelhorCaso, "melhor caso");
+
+        executarEMedir(runtime, formatter, arrPiorCaso, "pior caso");
+
+        executarEMedirCasoMedio(runtime, formatter);
     }
 
     public void executarSort() throws InterruptedException {
