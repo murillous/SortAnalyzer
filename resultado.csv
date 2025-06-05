@@ -10,3 +10,4 @@ Data,Algoritmo,Entrada,Caso,Tempo(s),Memoria(MB)
 2025-06-02 21:19:28,Shell Sort,10000000,caso medio,1.556682,40.516040
 2025-06-02 21:21:45,Selection Sort,10000000,melhor caso,12908.707274,107.681885
 2025-06-03 00:56:57,Selection Sort,10000000,pior caso,34385.171301,126.033356
+2025-06-03 10:30:03,Selection Sort,10000000,caso medio,26495.261420,185.023975
