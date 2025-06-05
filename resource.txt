@@ -1,2 +1,2 @@
-1000000
-Shell Sort
+100
+Heap Sort
