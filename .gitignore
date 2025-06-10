@@ -3,7 +3,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 src/META-INF
-Projeto-2-EDA.iml
+SortAnalyzer.iml
+.idea
 
 ### Eclipse ###
 .apt_generated
