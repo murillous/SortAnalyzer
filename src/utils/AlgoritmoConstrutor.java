@@ -6,32 +6,41 @@ import java.io.IOException;
 import java.util.List;
 
 public class AlgoritmoConstrutor {
-    List<Integer> entradas = List.of(10, 100, 1000, 10000, 100000, 1000000,10000000);
-    List<String> sorts = List.of("Selection Sort", "Shell Sort", "Heap Sort");
+    List<Integer> entradas = List.of(100, 1000, 10000, 100000, 1000000,10000000);
+    List<String> sorts = List.of("selection sort", "shell sort", "heap sort");
 
     int entrada;
     String sort;
-
     public void leitorArquivo(String caminhoArquivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha1 = br.readLine();
             String linha2 = br.readLine();
 
-            if (linha1 != null && linha2 != null) {
-                int valorEntrada = Integer.parseInt(linha1.trim());
-                String sortSelecionado = linha2.trim();
-
-                if (entradas.contains(valorEntrada) && sorts.contains(sortSelecionado)) {
-                    entrada = valorEntrada;
-                    sort = sortSelecionado;
-                } else {
-                    throw new IllegalArgumentException("Entrada ou algoritmo de ordenação inválido.");
-                }
-            } else {
-                throw new IllegalArgumentException("Arquivo com dados incompletos.");
+            if (!(linha1 != null && linha2 != null)) {
+                System.out.println("Arquivo de entrada incompleto!");
             }
+
+            int valorEntrada = Integer.parseInt(linha1.trim());
+            String sortSelecionado = linha2.trim();
+
+            if (!(entradas.contains(valorEntrada) && sorts.contains(sortSelecionado.toLowerCase()))) {
+                System.out.println("Entrada ou Sorts inválidos!");
+                System.out.println("Entradas válidas: ");
+
+                for(Integer num: entradas){
+                    System.out.printf("%d, ",num);
+                }
+
+                System.out.println("\nSorts válidos: ");
+                for(String sort: sorts){
+                    System.out.printf("%s, ",sort);
+                }
+            }
+
+            entrada = valorEntrada;
+            sort = sortSelecionado;
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao ler o arquivo: " + e.getMessage(), e);
+            System.out.println("Arquivo não encontrado");
         }
     }
 
