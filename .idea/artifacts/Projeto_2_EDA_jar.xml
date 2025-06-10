@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Projeto-2-EDA:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Projeto_2_EDA_jar</output-path>
+    <root id="archive" name="Projeto-2-EDA.jar">
+      <element id="module-output" name="Projeto-2-EDA" />
+    </root>
+  </artifact>
+</component>

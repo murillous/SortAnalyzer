@@ -54,13 +54,13 @@ public class Algoritmos {
 
     public void executar() throws InterruptedException {
         switch (sort) {
-            case "Selection Sort":
+            case "selection sort":
                 executarSort();
                 break;
-            case "Shell Sort":
+            case "shell sort":
                 executarSort();
                 break;
-            case "Heap Sort":
+            case "heap sort":
                 executarHeapSort();
                 break;
             default:
@@ -162,13 +162,13 @@ public class Algoritmos {
 
     public void executarAlgoritmo(int[] arr) {
         switch (sort) {
-            case "Selection Sort":
+            case "selection sort":
                selectionSort(arr);
                 break;
-            case "Shell Sort":
+            case "shell sort":
                shellSort(arr);
                 break;
-            case "Heap Sort":
+            case "heap sort":
               heapsort(arr);
                 break;
             default:
