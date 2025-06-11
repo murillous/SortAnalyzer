@@ -18,6 +18,7 @@ public class AlgoritmoConstrutor {
 
             if (!(linha1 != null && linha2 != null)) {
                 System.out.println("Arquivo de entrada incompleto!");
+                System.exit(0);
             }
 
             int valorEntrada = Integer.parseInt(linha1.trim());
@@ -35,6 +36,7 @@ public class AlgoritmoConstrutor {
                 for(String sort: sorts){
                     System.out.printf("%s, ",sort);
                 }
+                System.exit(0);
             }
 
             entrada = valorEntrada;

@@ -157,7 +157,7 @@ public class Algoritmos {
             mediaExecucao += tempoExecucao;
             mediaMemoria += memoriaUsada;
         }
-        ResultadoCsv.salvar("resultado.csv", data ,sort, entrada, "caso medio", (double) mediaExecucao /5, (double) mediaMemoria /5);
+        ResultadoCsv.salvar("resultado.csv", data ,sort, entrada, "caso médio", (double) mediaExecucao /5, (double) mediaMemoria /5);
     }
 
     public void executarAlgoritmo(int[] arr) {
@@ -177,28 +177,31 @@ public class Algoritmos {
     }
 
     // ==============SORTS================
-    public int[] selectionSort(int[] arr){
-        for(int i = 0; i < arr.length -1; i++){
-            int minIndex = i;
-            for(int j = i + 1; j < arr.length; j++){
-                if(arr[j] < arr[minIndex]){
-                    minIndex = j;
+    public void selectionSort(int[] arr){
+        int n = arr.length; // executa uma vez
+        for(int i = 0; i < n -1; i++){ // executa n-1 vezes
+            int minIndex = i; // executa n-1 vezes
+            for(int j = i + 1; j < n; j++){// executa n(n-1)/2 vezes
+                if(arr[j] < arr[minIndex]){ // executa n(n-1)/2
+                    minIndex = j; // executa n(n-1)/2 vezes ou 0 para melhor caso
                 }
             }
-            if(minIndex != i){
-                int temp = arr[i];
-                arr[i] = arr[minIndex];
-                arr[minIndex] = temp;
+            if(minIndex != i){ // executa n-1 vezes
+                int temp = arr[i]; // executa n-1 vezes ou 0 para melhor caso
+                arr[i] = arr[minIndex]; // executa n-1 vezes ou 0 para melhor caso
+                arr[minIndex] = temp; // executa n-1 vezes ou 0 para melhor caso
             }
         }
-        return arr;
+        // Para melhor caso:
+        // T(n) = 1 + (n-1) + (n-1) + (n(n-1)/2) + (n(n-1)/2) + (n-1)
+        // T(n) = n² + 2n - 2
     }
 
-    public int[] shellSort(int[] array) {
-        int n = array.length;
-        double k = Math.floor((Math.log(n+1)/Math.log(3)));
-        int gap = (int) ((Math.pow(3,k) - 1)/2);
-        while(gap > 0){
+    public void shellSort(int[] array) {
+        int n = array.length; // executa uma vez
+        double k = Math.floor((Math.log(n+1)/Math.log(3))); // executa uma vez
+        int gap = (int) ((Math.pow(3,k) - 1)/2); // executa uma vez
+        for(; gap > 0; gap = (gap-1)/3){
             for(int i = gap; i < n; i++){
                 int key = array[i];
                 int j = i-gap;
@@ -208,12 +211,10 @@ public class Algoritmos {
                 }
                 array[j + gap] = key;
             }
-            gap = (gap - 1)/3;
         }
-        return array;
     }
 
-    public int[] heapsort(int[] array) {
+    public void heapsort(int[] array) {
         int n = array.length;
 
         for (int i = n / 2 - 1; i >= 0; i--) {
@@ -228,7 +229,6 @@ public class Algoritmos {
 
             heapify(array, i, 0);
         }
-        return array;
     }
 
     private void heapify(int[] array, int n, int i) {
