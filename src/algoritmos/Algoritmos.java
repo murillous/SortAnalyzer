@@ -178,78 +178,123 @@ public class Algoritmos {
 
     // ==============SORTS================
     public void selectionSort(int[] arr){
-        int n = arr.length; // executa uma vez
-        for(int i = 0; i < n -1; i++){ // executa n-1 vezes
-            int minIndex = i; // executa n-1 vezes
-            for(int j = i + 1; j < n; j++){// executa n(n-1)/2 vezes
-                if(arr[j] < arr[minIndex]){ // executa n(n-1)/2
-                    minIndex = j; // executa n(n-1)/2 vezes ou 0 para melhor caso
+        int n = arr.length;                     // executa 1 vez
+        for(int i = 0; i < n -1; i++){          // executa n-1 vezes
+            int minIndex = i;                   // executa n-1 vezes
+            for(int j = i + 1; j < n; j++){     // executa n(n-1)/2 vezes
+                if(arr[j] < arr[minIndex]){     // executa n(n-1)/2
+                    minIndex = j;               // executa n(n-1)/2 vezes ou 0 para melhor caso
                 }
             }
-            if(minIndex != i){ // executa n-1 vezes
-                int temp = arr[i]; // executa n-1 vezes ou 0 para melhor caso
-                arr[i] = arr[minIndex]; // executa n-1 vezes ou 0 para melhor caso
-                arr[minIndex] = temp; // executa n-1 vezes ou 0 para melhor caso
+            if(minIndex != i){                  // executa n-1 vezes
+                int temp = arr[i];              // executa n-1 vezes ou 0 para melhor caso
+                arr[i] = arr[minIndex];         // executa n-1 vezes ou 0 para melhor caso
+                arr[minIndex] = temp;           // executa n-1 vezes ou 0 para melhor caso
             }
         }
-        // Para melhor caso:
+        // Para o melhor caso:
         // T(n) = 1 + (n-1) + (n-1) + (n(n-1)/2) + (n(n-1)/2) + (n-1)
         // T(n) = n² + 2n - 2
+        // O(n²)
+
+        // Para pior caso
+        // T(n) = [Termos do melhor caso] + n(n-1)/2 + (n-1) + (n-1) + (n-1)
+        // T(n) = 1 + 6(n-1) + 3(n(n-1)/2)
+        // T(n) = 1 + 6n - 6 + 1.5n²-1.5n
+        // T(n) = 1.5n² + 4.5n - 5
+        // O(n²)
     }
 
     public void shellSort(int[] array) {
-        int n = array.length; // executa uma vez
-        double k = Math.floor((Math.log(n+1)/Math.log(3))); // executa uma vez
-        int gap = (int) ((Math.pow(3,k) - 1)/2); // executa uma vez
-        for(; gap > 0; gap = (gap-1)/3){
-            for(int i = gap; i < n; i++){
-                int key = array[i];
-                int j = i-gap;
-                while(j >= 0 && array[j] > key) {
-                    array[j+gap] = array[j];
-                    j = j - gap;
+        int n = array.length;                               // executa 1 vez
+        double k = Math.floor((Math.log(n+1)/Math.log(3))); // executa 1 vez
+        int gap = (int) ((Math.pow(3,k) - 1)/2);            // executa 1 vez
+        for(; gap > 0; gap = (gap-1)/3){                    // executa G (G ≈ log₃ n) vezes
+            for(int i = gap; i < n; i++){                   // executa (n-gap) vezes por gap
+                int key = array[i];                         // executa (n-gap) vezes por gap
+                int j = i-gap;                              // executa (n-gap) vezes por gap
+                while(j >= 0 && array[j] > key) {           // executa W (varia por caso)
+                    array[j+gap] = array[j];                // executa W
+                    j = j - gap;                            // executa W
                 }
-                array[j + gap] = key;
+                array[j + gap] = key;                       // executa (n-gap) vezes por gap
             }
         }
+        // DEFINIÇÕES:
+        // G = número de gaps da sequência de Knuth ≈ log₃(n)
+        // gap_i = valor do i-ésimo gap (ex: para n=10, gaps: 4, 1)
+        // W = número total de execuções do while (soma de todos os gaps)
+        // Σ gap_i = soma de todos os valores de gap (ex: 4 + 1 = 5)
+
+        // Para o melhor caso:
+        // T_melhor(n) = 3 + G + Σ(i=1 até G) [4×(n-gap_i) + 1×(n-gap_i)]
+        // T_melhor(n) = 3 + G + 5×Σ(n-gap_i)
+        // T_melhor(n) = 3 + G + 5×(G×n - Σ gap_i)
+        // T_melhor(n) = 3 + log₃(n) + 5×(log₃(n)×n - 1.5n)
+        // T_melhor(n) = 3 + log₃(n) + 5n×log₃(n) - 7.5n
+        // T_melhor(n) ≈ 5n×log₃(n) - 7.5n + log₃(n) + 3
+        // Complexidade: O(n log n)
+
+        // Para o pior caso:
+        // while executa máximo de vezes, elementos percorrem maior distância
+        // W_por_gap_i ≈ Σ(j=gap_i até n-1) (j/gap_i) ≈ (n-gap_i)²/(2×gap_i)
+        // W_total = Σ(i=1 até G) W_por_gap_i
+        // T_pior(n) = 3 + G + Σ(i=1 até G) [4×(n-gap_i) + 1×(n-gap_i) + 3×W_por_gap_i]
+        // T_pior(n) = 3 + G + Σ(i=1 até G) [5×(n-gap_i) + 3×(n-gap_i)²/(2×gap_i)]
+        // T_pior(n) ≈ 5n×log₃(n) + C×n^1.5
+        // Complexidade: O(n^1.5)
     }
 
     public void heapsort(int[] array) {
-        int n = array.length;
+        int n = array.length;                    // executa 1 vez
 
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(array, n, i);
+        for (int i = n / 2 - 1; i >= 0; i--) {   // executa n/2 vezes
+            heapify(array, n, i);                // chama n/2 vezes
         }
 
-        for (int i = n - 1; i > 0; i--) {
-
-            int temp = array[0];
-            array[0] = array[i];
-            array[i] = temp;
-
-            heapify(array, i, 0);
+        for (int i = n - 1; i > 0; i--) {        // executa n-1 vezes
+            int temp = array[0];                 // executa n-1 vezes
+            array[0] = array[i];                 // executa n-1 vezes
+            array[i] = temp;                     // executa n-1 vezes
+            heapify(array, i, 0);            // chama n-1 vezes
         }
     }
 
     private void heapify(int[] array, int n, int i) {
-        int maior = i;
-        int esq = 2 * i + 1;
-        int dir = 2 * i + 2;
+        int maior = i;          // executa 1 vez
+        int esq = 2 * i + 1;    // executa 1 vez
+        int dir = 2 * i + 2;    // executa 1 vez
 
-        if (esq < n && array[esq] > array[maior]) {
-            maior = esq;
+        if (esq < n && array[esq] > array[maior]) { // executa 1 vez
+            maior = esq;                            // executa 1 vez ou 0 para o melhor caso
         }
 
-        if (dir < n && array[dir] > array[maior]) {
-            maior = dir;
+        if (dir < n && array[dir] > array[maior]) { // executa 1 vez
+            maior = dir;                            // executa 1 vez ou 0 para o melhor caso
         }
 
-        if (maior != i) {
-            int troca = array[i];
-            array[i] = array[maior];
-            array[maior] = troca;
+        if (maior != i) {               // executa 1 vez
+            int troca = array[i];       // executa 1 vez ou 0 para o melhor caso
+            array[i] = array[maior];    // executa 1 vez ou 0 para o melhor caso
+            array[maior] = troca;       // executa 1 vez ou 0 para o melhor caso
 
-            heapify(array, n, maior);
+            heapify(array, n, maior);   // chama recursivamente 1 vez ou 0 para o melhor caso
         }
     }
+
+    // Para o melhor Caso:
+    // T_melhor(n) =  1 + (n/2) + 6(n/2) + 4(n-1) + 6(n-1)
+    // T_melhor(n) = 1 + 7(n/2) + 10(n-1)
+    // T_melhor(n) = 3.5n + 10n - 9
+    // T_melhor(n) = 13.5n - 9
+    // O(n)
+
+    // Para o Pior Caso:
+    // T_pior(n) = 1 + (n/2) + 4n + 4(n-1) + 9×Σ(i=1 até n-1) log(i)
+    //
+    // Σ(i=1 até n-1) log(i) ≈ (n-1)×log(n-1) - (n-1)/ln(2) ≈ n×log(n)
+    //
+    // T_pior(n) ≈ 1 + 0.5n + 4n + 4n - 4 + 9n×log(n)
+    // T_pior(n) ≈ 9n×log(n) + 8.5n - 3
+    // O(n log n)
 }
